@@ -2,7 +2,7 @@
 
 This is a sample project to demonstrate how to use Google Guide dependency injection with JCL (JarClassLoader).
 
-How it works:
+## How it works
 
 Instead of using JCL's `JclObjectFactory` to instantiate objects, you bind the Classes returned by JCL in a Guice
 module. Here is a simple example binding `SomeImpl` to `SomeInterface`. The impl class resides in "some.jar" which
@@ -21,3 +21,9 @@ Injector injector = Guice.createInjector(new AbstractModule() {
 
 SomeInterface something = injector.getInstance(SomeInterface.class); // This returns SomeImpl
 ```
+
+## What's in this repo
+
+Two plugins (plugin-a and plugin-b) which both depend on _different_ versions of Jackson. JCL loads the plugins from a "plugins" directory at runtime and binds them to a Guice Multibinder. A dependent class then gets injected with both plugins and runs them.
+
+To run the example: `./gradlew :main:run` 

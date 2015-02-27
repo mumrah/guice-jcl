@@ -1,6 +1,6 @@
 # Example of using Guice with JCL
 
-This is a sample project to demonstrate how to use Google Guide dependency injection with JCL (JarClassLoader).
+This is a sample project to demonstrate how to use [Google Guice](https://github.com/google/guice) dependency injection with [JCL](https://github.com/kamranzafar/JCL) (JarClassLoader).
 
 ## How it works
 

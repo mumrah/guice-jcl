@@ -1,0 +1,6 @@
+rootProject.name = 'guice-jcl'
+
+include 'main'
+include 'plugin-client'
+include 'plugins:plugin-a'
+include 'plugins:plugin-b'

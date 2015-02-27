@@ -1,0 +1,74 @@
+allprojects {
+  apply plugin: 'java'
+
+  sourceCompatibility = 1.7
+  version = '1.0'
+
+  repositories {
+    mavenCentral()
+  }
+}
+
+project(':plugin-client') {
+  apply plugin: 'java'
+
+}
+
+project(':plugins') {
+
+  subprojects {
+
+    configurations {
+      provided
+      compile.extendsFrom provided
+    }
+
+    dependencies {
+      provided 'com.google.inject:guice:4.0-beta5'
+    }
+
+    task assemblePlugin(type: Copy, dependsOn: jar) {
+      into "../../build/plugins/${project.name}"
+      from(configurations.compile - configurations.provided) {
+        exclude 'plugin-client-*.jar'
+        into 'lib'
+      }
+
+      from(jar) {
+        into 'lib'
+      }
+    }
+  }
+}
+
+project(':plugins:plugin-a') {
+  dependencies {
+    compile project(':plugin-client')
+    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
+  }
+}
+
+project(':plugins:plugin-b') {
+  dependencies {
+    compile project(':plugin-client')
+    compile 'org.codehaus.jackson:jackson-mapper-asl:1.8.9'
+  }
+}
+
+project(':main') {
+  apply plugin: 'java'
+  apply plugin:'application'
+
+  dependencies {
+    compile project(':plugin-client')
+    compile 'org.xeustechnologies:jcl-core:2.6'
+    compile 'com.google.inject:guice:4.0-beta5'
+    compile 'com.google.inject.extensions:guice-multibindings:4.0-beta5'
+
+  }
+
+  mainClassName = "io.github.mumrah.guice_jcl.Main"
+  applicationDefaultJvmArgs = ["-Dplugins.dir=../build/plugins"]
+
+  run.dependsOn(project(':plugins').subprojects.assemblePlugin)
+}

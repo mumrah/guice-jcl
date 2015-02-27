@@ -30,7 +30,6 @@ project(':plugins') {
     task assemblePlugin(type: Copy, dependsOn: jar) {
       into "../../build/plugins/${project.name}"
       from(configurations.compile - configurations.provided) {
-        exclude 'plugin-client-*.jar'
         into 'lib'
       }
 
@@ -43,14 +42,14 @@ project(':plugins') {
 
 project(':plugins:plugin-a') {
   dependencies {
-    compile project(':plugin-client')
+    provided project(':plugin-client')
     compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
   }
 }
 
 project(':plugins:plugin-b') {
   dependencies {
-    compile project(':plugin-client')
+    provided project(':plugin-client')
     compile 'org.codehaus.jackson:jackson-mapper-asl:1.8.9'
   }
 }
